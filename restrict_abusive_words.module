@@ -95,10 +95,7 @@ function restrict_abusive_words_menu() {
 }
 
 /**
- * @global type $user
- * @param type $form
- * @param type $form_state
- * @param type $form_id
+ * Implements hook_form_alter().
  */
 function restrict_abusive_words_form_alter(&$form, &$form_state, $form_id) {
   global $user;
