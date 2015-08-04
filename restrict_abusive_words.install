@@ -35,7 +35,7 @@ function restrict_abusive_words_schema() {
       ),
     ),
     'primary key' => array('id'),
-  );  
+  );
 
   return $schema;
 }
