@@ -2,8 +2,7 @@
 
 /**
  * @file
- * Contains administrative setting page with other options like adding,
- * editing, and deleting abusive words.
+ * Contains administrative configuration page.
  */
 
 /**
@@ -25,7 +24,7 @@ function restrict_abusive_words_admin_form($form, &$form_state) {
   );
 
   $node_types = node_type_get_types();
-  foreach ($node_types as $k_type => $type) {
+  foreach ($node_types as $type) {
     $node_type[$type->type] = $type->type;
   }
 
@@ -76,7 +75,7 @@ function restrict_abusive_words_admin_add_form($form, &$form_state) {
     '#description' => t('Look up for abusive word.'),
     '#maxlength' => 60,
     '#autocomplete_path' => 'admin/config/content/restrict_abusive_words/autocomplete',
-  );  
+  );
 
   $form['words_list'] = array(
     '#type' => 'textarea',
@@ -146,7 +145,6 @@ function restrict_abusive_words_admin_form_delete_confirm_submit($form, &$form_s
 }
 
 /**
- * Restrict Abusive Words admin configuration page callback.
  * Lists of existing abusive words or phrases that are configured to restrict.
  */
 function restrict_abusive_words_admin_list() {

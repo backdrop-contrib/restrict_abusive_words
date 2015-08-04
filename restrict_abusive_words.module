@@ -7,12 +7,6 @@
 
 /**
  * Implements hook_help().
- *
- * @param $path
- *   string file path
- *
- * @return
- *   string
  */
 function restrict_abusive_words_help($path, $arg) {
   switch ($path) {
@@ -29,9 +23,6 @@ function restrict_abusive_words_help($path, $arg) {
 
 /**
  * Implements hook_permission().
- *
- * @return
- *   array of permissions
  */
 function restrict_abusive_words_permission() {
   return array(
@@ -44,9 +35,6 @@ function restrict_abusive_words_permission() {
 
 /**
  * Implements hook_menu().
- *
- * @return
- *   array of menu information
  */
 function restrict_abusive_words_menu() {
   $items = array();
@@ -107,8 +95,8 @@ function restrict_abusive_words_menu() {
 }
 
 /**
- * Implement hook_form_alter.
- */ 
+ * Implement hook_form_alter().
+ */
 function restrict_abusive_words_form_alter(&$form, &$form_state, $form_id) {
   global $user;
   $web_form = '';
@@ -120,9 +108,9 @@ function restrict_abusive_words_form_alter(&$form, &$form_state, $form_id) {
   $user_roles = variable_get('restrict_abusive_words_user_roles');
   $entity_node = variable_get('restrict_abusive_words_entity_node');
   $entity_comment = variable_get('restrict_abusive_words_entity_comment');
-  
+
   if (isset($user_roles)) {
-    foreach ($user_roles as $k_r => $val_r) {
+    foreach ($user_roles as $val_r) {
       if (!empty($val_r)) {
         $check_user_roles = TRUE;
         break;
@@ -147,34 +135,34 @@ function restrict_abusive_words_form_alter(&$form, &$form_state, $form_id) {
       }
     }
     if (in_array($form_id, $user_form)) {
-      array_unshift($form['#validate'], '_restrict_abusive_words_user_form_validate'); 
+      array_unshift($form['#validate'], '_restrict_abusive_words_user_form_validate');
     }
-    if (!empty($web_form) && (strpos($form_id, $web_form) !== FALSE)) {      
-      array_unshift($form['#validate'], '_restrict_abusive_words_web_form_validate'); 
+    if (!empty($web_form) && (strpos($form_id, $web_form) !== FALSE)) {
+      array_unshift($form['#validate'], '_restrict_abusive_words_web_form_validate');
     }
 
     // Validate node form.
     if (isset($entity_node)) {
-      foreach ($entity_node as $node_k => $node_val) {
-        if (!empty($node_val)) {  
+      foreach ($entity_node as $node_val) {
+        if (!empty($node_val)) {
           $node_form[] = $node_val . '_node_form';
         }
       }
     }
     if (in_array($form_id, $node_form)) {
-      array_unshift($form['#validate'], '_restrict_abusive_words_node_form_validate');  
+      array_unshift($form['#validate'], '_restrict_abusive_words_node_form_validate');
     }
 
     // Validate comment node form.
     if (isset($entity_comment)) {
-      foreach ($entity_comment as $comment_k => $comment_val) {
+      foreach ($entity_comment as $comment_val) {
         if (!empty($comment_val)) {
           $comment_form[] = 'comment_node_' . $comment_val . '_form';
         }
       }
     }
     if (in_array($form_id, $comment_form)) {
-      array_unshift($form['#validate'], '_restrict_abusive_words_comment_form_validate');  
+      array_unshift($form['#validate'], '_restrict_abusive_words_comment_form_validate');
     }
   }
 }
@@ -205,13 +193,12 @@ function _restrict_abusive_words_user_form_validate(&$form, &$form_state) {
       if ($check_word !== FALSE) {
         _restrict_abusive_words_validation_message($key, $check_word);
       }
-    } 
+    }
   }
 }
 
 /**
  * Callback function to validate web form for abusive words.
- * Validate all the node form mentioned in th config form.
  */
 function _restrict_abusive_words_web_form_validate(&$form, &$form_state) {
   if (isset($form_state['values'])) {
@@ -231,7 +218,6 @@ function _restrict_abusive_words_web_form_validate(&$form, &$form_state) {
 
 /**
  * Callback function to validate node form for abusive words.
- *
  */
 function _restrict_abusive_words_node_form_validate(&$form, &$form_state) {
   if (isset($form_state['values'])) {
@@ -291,13 +277,7 @@ function _restrict_abusive_words_comment_form_validate(&$form, &$form_state) {
 }
 
 /**
- * Implement _restrict_abusive_words_search_words.
- *
- * @param
- *   $words
- *     Words list from where word will be search.
- *   $string
- *     word to search.
+ * Check the word or phrase is exist in the abusive word list.
  */
 function _restrict_abusive_words_search_words($words, $string) {
   if (!empty($string) && isset($words)) {
@@ -314,25 +294,19 @@ function _restrict_abusive_words_search_words($words, $string) {
  * Implement _restrict_abusive_words_get_words_list().
  */
 function _restrict_abusive_words_get_words_list() {
-   $output = array();
-   $results = db_query('Select * FROM {restrict_abusive_words}');
-   if (count($results) > 0) {
-     foreach ($results as $result) {
-       $output[] = $result->words;
-     }
-     return $output;
-   }
-   return FALSE;
+  $output = array();
+  $results = db_query('Select * FROM {restrict_abusive_words}');
+  if (count($results) > 0) {
+    foreach ($results as $result) {
+      $output[] = $result->words;
+    }
+    return $output;
+  }
+  return FALSE;
 }
 
 /**
- * Implement _restrict_abusive_words_validation_message().
- *
- * @param
- *   $field
- *     validate against the field name(machine name)
- *   $word
- *     abusive word
+ * Error message against the field name(machine name).
  */
 function _restrict_abusive_words_validation_message($field, $word) {
   $message = t("%word is not allowed word to use as it is abusive words. Please correct the word or contact to site administrator.", array("%word" => $word));
@@ -341,10 +315,6 @@ function _restrict_abusive_words_validation_message($field, $word) {
 
 /**
  * Get list of abusive word in autocomplete form.
- *
- * @param
- *   $string
- *     String to search
  */
 function _restrict_abusive_words_abusive_word_autocomplete($string) {
   if (!empty($string)) {

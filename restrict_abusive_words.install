@@ -20,7 +20,7 @@ function restrict_abusive_words_install() {
  * Implements hook_schema().
  */
 function restrict_abusive_words_schema() {
-  $schema = array();  
+  $schema = array();
   $schema['restrict_abusive_words'] = array(
     'fields' => array(
       'id' => array(
