@@ -118,7 +118,7 @@ function restrict_abusive_words_form_alter(&$form, &$form_state, $form_id) {
     }
   }
 
-  // Check user permision to use Restrict abusive words.
+  // Check user permission to use Restrict abusive words.
   if ((($check_user_roles) && (count(array_diff($user->roles, $user_roles)) == 0)) || !($check_user_roles)) {
 
     // Validate user related form and webform.
