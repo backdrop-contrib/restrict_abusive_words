@@ -98,6 +98,22 @@ function restrict_abusive_words_admin_add_form($form, &$form_state) {
 }
 
 /**
+ * Validate handler to add abusive words.
+ */
+function restrict_abusive_words_admin_add_form_validate($form, &$form_state) {
+  $words_list = explode("\n", $form_state['values']['words_list']);
+  $words = array_map('trim', $words_list);
+  $words = array_filter($words, 'strlen');
+  foreach ($words as $word) {
+    $search_string = _restrict_abusive_words_get_words_list();
+    $check_word = _restrict_abusive_words_search_words($search_string, $word);
+    if ($check_word) {
+	    form_set_error('words_list', $word.' is already exist');
+	  }
+  }
+}
+
+/**
  * Submit handler to add abusive words.
  */
 function restrict_abusive_words_admin_add_form_submit($form, &$form_state) {
