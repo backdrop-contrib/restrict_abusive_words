@@ -11,7 +11,7 @@
 function restrict_abusive_words_help($path, $arg) {
   switch ($path) {
     case 'admin/help#restrict_abusive_words':
-      return t('<p>The Restrict Abusive Words module restrict to use words or phrases in forms all over the site content. The Restriction can be applied on content form, comment form, user profile form, user registration form and webform.Restriction can also be applied based on user roles.</p>');
+      return t('The Restrict Abusive Words module restrict to use words or phrases in forms all over the site content. The Restriction can be applied on content form, comment form, user profile form, user registration form and webform.Restriction can also be applied based on user roles.');
 
     case 'admin/config/content/restrict_abusive_words':
       return t('Set the basic Configuration to restrict to use in the forms all over the site.');
@@ -101,6 +101,7 @@ function restrict_abusive_words_form_alter(&$form, &$form_state, $form_id) {
   global $user;
   $web_form = '';
   $check_user_roles = FALSE;
+  $check_user_per = FALSE;
   $node_form = array();
   $comment_form = array();
   $user_form = array();
@@ -113,13 +114,16 @@ function restrict_abusive_words_form_alter(&$form, &$form_state, $form_id) {
     foreach ($user_roles as $val_r) {
       if (!empty($val_r)) {
         $check_user_roles = TRUE;
-        break;
+        if (in_array($val_r, $user->roles)) {
+          $check_user_per = TRUE;
+          break;
+        }
       }
     }
   }
 
   // Check user permission to use Restrict abusive words.
-  if ((($check_user_roles) && (count(array_diff($user->roles, $user_roles)) == 0)) || !($check_user_roles)) {
+  if (!($check_user_roles) || ($check_user_per)) {
 
     // Validate user related form and webform.
     if (isset($general_form)) {
@@ -172,9 +176,9 @@ function restrict_abusive_words_form_alter(&$form, &$form_state, $form_id) {
  */
 function _restrict_abusive_words_user_form_validate(&$form, &$form_state) {
   if (isset($form_state['values'])) {
+    $search_string = _restrict_abusive_words_get_words_list();
     foreach ($form_state['values'] as $key => $fields) {
-      $check_word = FALSE;
-      $search_string = _restrict_abusive_words_get_words_list();
+      $check_word = FALSE;     
       if ((stripos($key, 'field_') !== FALSE)) {
         if (count($fields[LANGUAGE_NONE]) > 0) {
           foreach ($fields[LANGUAGE_NONE] as $f_key => $val) {
@@ -202,9 +206,9 @@ function _restrict_abusive_words_user_form_validate(&$form, &$form_state) {
  */
 function _restrict_abusive_words_web_form_validate(&$form, &$form_state) {
   if (isset($form_state['values'])) {
+    $search_string = _restrict_abusive_words_get_words_list();
     foreach ($form_state['values']['submitted'] as $key => $fields) {
       $check_word = FALSE;
-      $search_string = _restrict_abusive_words_get_words_list();
       if (is_string($fields)) {
         $check_word = _restrict_abusive_words_search_words($search_string, $form_state['values']['submitted'][$key]);
       }
@@ -221,9 +225,9 @@ function _restrict_abusive_words_web_form_validate(&$form, &$form_state) {
  */
 function _restrict_abusive_words_node_form_validate(&$form, &$form_state) {
   if (isset($form_state['values'])) {
+    $search_string = _restrict_abusive_words_get_words_list();
     foreach ($form_state['values'] as $key => $fields) {
       $check_word = FALSE;
-      $search_string = _restrict_abusive_words_get_words_list();
       if ((stripos($key, 'field_') !== FALSE) || ($key == 'body')) {
         if (count($fields[LANGUAGE_NONE]) > 0) {
           foreach ($fields[LANGUAGE_NONE] as $f_key => $val) {
@@ -251,9 +255,9 @@ function _restrict_abusive_words_node_form_validate(&$form, &$form_state) {
  */
 function _restrict_abusive_words_comment_form_validate(&$form, &$form_state) {
   if (isset($form_state['values'])) {
+    $search_string = _restrict_abusive_words_get_words_list();
     foreach ($form_state['values'] as $key => $fields) {
       $check_word = FALSE;
-      $search_string = _restrict_abusive_words_get_words_list();
       if ((stripos($key, 'field_') !== FALSE) || ($key == 'comment_body')) {
         if (count($fields[LANGUAGE_NONE]) > 0) {
           foreach ($fields[LANGUAGE_NONE] as $f_key => $val) {

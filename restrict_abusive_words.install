@@ -6,17 +6,6 @@
  */
 
 /**
- * Implements hook_install().
- */
-function restrict_abusive_words_install() {
-  // Set some default variables necessary for the module to perform.
-  variable_set('restrict_abusive_words_user_roles', array());
-  variable_set('restrict_abusive_words_general_form', array());
-  variable_set('restrict_abusive_words_entity_node', array());
-  variable_set('restrict_abusive_words_entity_comment', array());
-}
-
-/**
  * Implements hook_schema().
  */
 function restrict_abusive_words_schema() {
@@ -44,12 +33,9 @@ function restrict_abusive_words_schema() {
  * Implements hook_uninstall().
  */
 function restrict_abusive_words_uninstall() {
-  $result = db_select('variable', 'v')
-    ->fields('v', array('name'))
-    ->condition('name', 'restrict_abusive_words_%', 'LIKE')
-    ->execute();
-  foreach ($result as $row) {
-    variable_del($row->name);
-  }
-  cache_clear_all('variables', 'cache');
+  // Delete all variables related to this module.
+  variable_del('restrict_abusive_words_user_roles');
+  variable_del('restrict_abusive_words_general_form');
+  variable_del('restrict_abusive_words_entity_node');
+  variable_del('restrict_abusive_words_entity_comment');
 }

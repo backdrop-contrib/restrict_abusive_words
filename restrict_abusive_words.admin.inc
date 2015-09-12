@@ -33,7 +33,7 @@ function restrict_abusive_words_admin_form($form, &$form_state) {
     '#title' => t('Select Roles'),
     '#description' => t('Restrict to use abusive word for User Roles. If do not check any user roles, it will assume all user roles.'),
     '#options' => $user_role,
-    '#default_value' => variable_get('restrict_abusive_words_user_roles', TRUE),
+    '#default_value' => variable_get('restrict_abusive_words_user_roles', array()),
   );
 
   $form['restrict_abusive_words_general_form'] = array(
@@ -41,7 +41,7 @@ function restrict_abusive_words_admin_form($form, &$form_state) {
     '#title' => t('Select General Form'),
     '#description' => t('Restrict abusive word to use in General Form.'),
     '#options' => $general_form,
-    '#default_value' => variable_get('restrict_abusive_words_general_form', TRUE),
+    '#default_value' => variable_get('restrict_abusive_words_general_form', array()),
   );
 
   $form['restrict_abusive_words_entity_node'] = array(
@@ -49,7 +49,7 @@ function restrict_abusive_words_admin_form($form, &$form_state) {
     '#title' => t('Select Node Form'),
     '#description' => t('Restrict abusive word to use in Node Form.'),
     '#options' => $node_type,
-    '#default_value' => variable_get('restrict_abusive_words_entity_node', TRUE),
+    '#default_value' => variable_get('restrict_abusive_words_entity_node', array()),
   );
 
   $form['restrict_abusive_words_entity_comment'] = array(
@@ -57,7 +57,7 @@ function restrict_abusive_words_admin_form($form, &$form_state) {
     '#title' => t('Select Comment Node Form'),
     '#description' => t('Restrict abusive word to use in Comment Node Form.'),
     '#options' => $node_type,
-    '#default_value' => variable_get('restrict_abusive_words_entity_comment', TRUE),
+    '#default_value' => variable_get('restrict_abusive_words_entity_comment', array()),
   );
 
   return system_settings_form($form);
