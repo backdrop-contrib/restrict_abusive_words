@@ -28,10 +28,18 @@ function restrict_abusive_words_admin_form($form, &$form_state) {
     $node_type[$type->type] = $type->type;
   }
 
+  $form['restrict_abusive_words_disable_user_roles'] = array(
+    '#type' => 'checkboxes',
+    '#title' => t('Disable User Roles'),
+    '#description' => t('Disable Restrict Abusive Words for the selected user roles. By default no user role is selected.'),
+    '#options' => $user_role,
+    '#default_value' => variable_get('restrict_abusive_words_disable_user_roles', array()),
+  );
+
   $form['restrict_abusive_words_user_roles'] = array(
     '#type' => 'checkboxes',
-    '#title' => t('Select Roles'),
-    '#description' => t('Restrict to use abusive word for User Roles. If do not check any user roles, it will assume all user roles.'),
+    '#title' => t('Enable User Roles'),
+    '#description' => t('Restrict to use abusive word for the selected user roles. If do not check any user roles, it will assume all user roles.'),
     '#options' => $user_role,
     '#default_value' => variable_get('restrict_abusive_words_user_roles', array()),
   );

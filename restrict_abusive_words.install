@@ -35,6 +35,7 @@ function restrict_abusive_words_schema() {
 function restrict_abusive_words_uninstall() {
   // Delete all variables related to this module.
   variable_del('restrict_abusive_words_user_roles');
+  variable_del('restrict_abusive_words_disable_user_roles');
   variable_del('restrict_abusive_words_general_form');
   variable_del('restrict_abusive_words_entity_node');
   variable_del('restrict_abusive_words_entity_comment');

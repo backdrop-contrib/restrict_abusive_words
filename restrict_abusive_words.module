@@ -102,13 +102,24 @@ function restrict_abusive_words_form_alter(&$form, &$form_state, $form_id) {
   $web_form = '';
   $check_user_roles = FALSE;
   $check_user_per = FALSE;
+  $check_disable_user = FALSE;
   $node_form = array();
   $comment_form = array();
   $user_form = array();
   $general_form = variable_get('restrict_abusive_words_general_form');
+  $disable_user_roles = variable_get('restrict_abusive_words_disable_user_roles');
   $user_roles = variable_get('restrict_abusive_words_user_roles');
   $entity_node = variable_get('restrict_abusive_words_entity_node');
   $entity_comment = variable_get('restrict_abusive_words_entity_comment');
+
+  if (isset($disable_user_roles)) {
+    foreach ($disable_user_roles as $dis_user) {
+      if (!empty($dis_user) && in_array($dis_user, $user->roles)) {
+        $check_disable_user = TRUE;
+        break;
+      }
+    }
+  }
 
   if (isset($user_roles)) {
     foreach ($user_roles as $val_r) {
@@ -123,7 +134,7 @@ function restrict_abusive_words_form_alter(&$form, &$form_state, $form_id) {
   }
 
   // Check user permission to use Restrict abusive words.
-  if (!($check_user_roles) || ($check_user_per)) {
+  if (!$check_disable_user && (!($check_user_roles) || ($check_user_per))) {
 
     // Validate user related form and webform.
     if (isset($general_form)) {
