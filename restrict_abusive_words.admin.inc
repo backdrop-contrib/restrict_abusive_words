@@ -25,8 +25,21 @@ function restrict_abusive_words_admin_form($form, &$form_state) {
 
   $node_types = node_type_get_types();
   foreach ($node_types as $type) {
-    $node_type[$type->type] = $type->type;
+    $node_type[$type->type] = $type->name;
   }
+
+  $actions = array(
+    'prevent_form' => t('Prevent the form to submit'),
+    'deactive_form' => t('Deactive'),
+  );
+
+  $form['restrict_abusive_words_actions'] = array(
+    '#type' => 'radios',
+    '#title' => t('Choose the action.'),
+    '#description' => t('Choose the action after submitting the form, it will prevent the form or deactive the content/user etc.'),
+    '#options' => $actions,
+    '#default_value' => variable_get('restrict_abusive_words_actions', FALSE),
+  );
 
   $form['restrict_abusive_words_disable_user_roles'] = array(
     '#type' => 'checkboxes',
@@ -114,7 +127,7 @@ function restrict_abusive_words_admin_add_form_validate($form, &$form_state) {
   $words = array_filter($words, 'strlen');
   foreach ($words as $word) {
     $search_string = _restrict_abusive_words_get_words_list();
-    $check_word = _restrict_abusive_words_search_words($search_string, $word);
+    $check_word = _restrict_abusive_words_exists_words($search_string, $word);
     if ($check_word) {
       form_set_error('words_list', $word . ' is already exist');
     }

@@ -4,8 +4,13 @@ The Restrict Abusive Words module restrict to use words or phrases in
 forms all over the site content. The Restriction can be applied on
 content form, comment form, user profile form, user registration form
 and webform. Restriction can also be applied based on user roles.
-Restriction can be applied only cck fields(text, textarea and long text type) and others basic fields
-like title, body for node form; name, email for user registration form etc.
+Restriction can be applied only cck fields(text, textarea and long text
+type) and others basic fields like title, body for node form; name,
+email for user registration form etc.
+
+Right now there are two action, one form will be prevented to submit
+and another form will be saved but it will be unpublished for content,
+deactive for user etc.
 
 Installation
 ------------
