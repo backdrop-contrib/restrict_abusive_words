@@ -359,17 +359,17 @@ function _restrict_abusive_words_web_form_submit(&$form, &$form_state) {
 function _restrict_abusive_words_node_form_submit(&$form, &$form_state) {
   if (isset($form_state['values'])) {
     $search_string = _restrict_abusive_words_get_words_list();
-    foreach($form_state['values'] as $key => $fields) {
+    foreach ($form_state['values'] as $key => $fields) {
       $check_word = FALSE;
       if ((stripos($key, 'field_') !== FALSE) || ($key == 'body')) {
-	      if (count($fields[LANGUAGE_NONE]) > 0) {
-          foreach($fields[LANGUAGE_NONE] as $f_key => $val) {
-	          if (count($val) > 0) {
-		          if (isset($val['value'])) {
-			          $check_word = _restrict_abusive_words_search_words($search_string, $form_state['values'][$key][LANGUAGE_NONE][$f_key]['value']);
-		          }
-		        }
-	        }
+        if (count($fields[LANGUAGE_NONE]) > 0) {
+          foreach ($fields[LANGUAGE_NONE] as $f_key => $val) {
+            if (count($val) > 0) {
+              if (isset($val['value'])) {
+                $check_word = _restrict_abusive_words_search_words($search_string, $form_state['values'][$key][LANGUAGE_NONE][$f_key]['value']);
+              }
+            }
+          }
         }
       }
       elseif ($key == 'title') {
