@@ -47,6 +47,14 @@ function restrict_abusive_words_menu() {
     'access callback' => 'user_access',
     'access arguments' => array('administer restrict abusive words'),
     'file' => 'restrict_abusive_words.admin.inc',
+    'type' => MENU_NORMAL_ITEM,
+    'weight' => 1,
+  );
+  $items['admin/config/content/restrict_abusive_words/default'] = array(
+    'title' => 'Restrict Abusive Words',
+    'description' => 'General setting for Restrict Abusive Words.',
+    'access arguments' => array('administer restrict abusive words'),
+    'type' => MENU_DEFAULT_LOCAL_TASK,
   );
   $items['admin/config/content/restrict_abusive_words/list'] = array(
     'title' => 'List of Abusive words',
@@ -55,6 +63,7 @@ function restrict_abusive_words_menu() {
     'access arguments' => array('administer restrict abusive words'),
     'type' => MENU_LOCAL_TASK,
     'file' => 'restrict_abusive_words.admin.inc',
+    'weight' => 3,
   );
   $items['admin/config/content/restrict_abusive_words/add'] = array(
     'title' => 'Add abusive words',
@@ -64,6 +73,7 @@ function restrict_abusive_words_menu() {
     'access arguments' => array('administer restrict abusive words'),
     'type' => MENU_LOCAL_TASK,
     'file' => 'restrict_abusive_words.admin.inc',
+    'weight' => 2,
   );
   $items['admin/config/content/restrict_abusive_words/edit/%'] = array(
     'title' => 'Edit Abusive words',
