@@ -29,14 +29,14 @@ function restrict_abusive_words_admin_form($form, &$form_state) {
   }
 
   $actions = array(
-    'prevent_form' => t('Prevent the form to submit'),
-    'deactive_form' => t('Deactive'),
+    'prevent_form' => t('Prevent form submission'),
+    'deactive_form' => t('Deactivate the user'),
   );
 
   $form['restrict_abusive_words_actions'] = array(
     '#type' => 'radios',
     '#title' => t('Choose the action.'),
-    '#description' => t('Choose the action after submitting the form, it will prevent the form or deactive the content/user etc.'),
+    '#description' => t('Choose the action after submitting the form, it will prevent the form from being submitted or deactivate the content/user etc.'),
     '#options' => $actions,
     '#default_value' => variable_get('restrict_abusive_words_actions', FALSE),
   );
@@ -52,7 +52,7 @@ function restrict_abusive_words_admin_form($form, &$form_state) {
   $form['restrict_abusive_words_user_roles'] = array(
     '#type' => 'checkboxes',
     '#title' => t('Enable User Roles'),
-    '#description' => t('Restrict to use abusive word for the selected user roles. If do not check any user roles, it will assume all user roles.'),
+    '#description' => t('Restrict the use of abusive words for the selected user roles. If no user roles are checked, it will assume all user roles.'),
     '#options' => $user_role,
     '#default_value' => variable_get('restrict_abusive_words_user_roles', array()),
   );
@@ -60,7 +60,7 @@ function restrict_abusive_words_admin_form($form, &$form_state) {
   $form['restrict_abusive_words_general_form'] = array(
     '#type' => 'checkboxes',
     '#title' => t('Select General Form'),
-    '#description' => t('Restrict abusive word to use in General Form.'),
+    '#description' => t('Restrict abusive words use in General Form.'),
     '#options' => $general_form,
     '#default_value' => variable_get('restrict_abusive_words_general_form', array()),
   );
@@ -68,7 +68,7 @@ function restrict_abusive_words_admin_form($form, &$form_state) {
   $form['restrict_abusive_words_entity_node'] = array(
     '#type' => 'checkboxes',
     '#title' => t('Select Node Form'),
-    '#description' => t('Restrict abusive word to use in Node Form.'),
+    '#description' => t('Restrict abusive words use in Node Form.'),
     '#options' => $node_type,
     '#default_value' => variable_get('restrict_abusive_words_entity_node', array()),
   );
@@ -76,7 +76,7 @@ function restrict_abusive_words_admin_form($form, &$form_state) {
   $form['restrict_abusive_words_entity_comment'] = array(
     '#type' => 'checkboxes',
     '#title' => t('Select Comment Node Form'),
-    '#description' => t('Restrict abusive word to use in Comment Node Form.'),
+    '#description' => t('Restrict abusive words use in Comment Node Form.'),
     '#options' => $node_type,
     '#default_value' => variable_get('restrict_abusive_words_entity_comment', array()),
   );
@@ -92,8 +92,8 @@ function restrict_abusive_words_admin_add_form($form, &$form_state) {
 
   $form['check_word'] = array(
     '#type' => 'textfield',
-    '#title' => t('Look up for abusive word'),
-    '#description' => t('Look up for abusive word.'),
+    '#title' => t('Look up abusive word'),
+    '#description' => t('Look up abusive word.'),
     '#maxlength' => 60,
     '#autocomplete_path' => 'admin/config/content/restrict_abusive_words/autocomplete',
   );
@@ -101,7 +101,7 @@ function restrict_abusive_words_admin_add_form($form, &$form_state) {
   $form['words_list'] = array(
     '#type' => 'textarea',
     '#title' => t('Words'),
-    '#description' => t("Enter a word or phrase you want to restrict as abusive. You can enter multiple word by adding more word on a new line."),
+    '#description' => t("Enter a word or phrase you want to restrict as abusive. You can enter multiple words by adding words on a new line."),
     '#required' => TRUE,
   );
 
@@ -129,7 +129,7 @@ function restrict_abusive_words_admin_add_form_validate($form, &$form_state) {
     $search_string = _restrict_abusive_words_get_words_list();
     $check_word = _restrict_abusive_words_exists_words($search_string, $word);
     if ($check_word) {
-      form_set_error('words_list', $word . ' is already exist');
+      form_set_error('words_list', $word . ' already exists in the abusive word list.');
     }
   }
 }

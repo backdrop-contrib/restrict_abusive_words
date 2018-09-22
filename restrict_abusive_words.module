@@ -11,10 +11,10 @@
 function restrict_abusive_words_help($path, $arg) {
   switch ($path) {
     case 'admin/help#restrict_abusive_words':
-      return t('The Restrict Abusive Words module restrict to use words or phrases in forms all over the site content. The Restriction can be applied on content form, comment form, user profile form, user registration form and webform.Restriction can also be applied based on user roles.');
+      return t('The Restrict Abusive Words module restricts the use of words or phrases in forms all over the site content. The Restriction can be applied on content form, comment form, user profile form, user registration form, and webform. Restriction can also be applied based on user roles.');
 
     case 'admin/config/content/restrict_abusive_words':
-      return t('Set the basic Configuration to restrict to use in the forms all over the site.');
+      return t('Set the basic Configuration to restrict the use of abusive words in the forms all over the site.');
 
     case 'admin/people/permissions#administer restrict abusive words':
       return t('Allow users to configure abusive words which need to be restricted.');
@@ -75,7 +75,7 @@ function restrict_abusive_words_menu() {
     'file' => 'restrict_abusive_words.admin.inc',
   );
   $items['admin/config/content/restrict_abusive_words/delete/%'] = array(
-    'title' => 'Delete Abusive word',
+    'title' => 'Delete Abusive words',
     'page callback' => 'drupal_get_form',
     'page arguments' => array('restrict_abusive_words_admin_form_delete_confirm', 5),
     'access callback' => 'user_access',
@@ -84,7 +84,7 @@ function restrict_abusive_words_menu() {
     'file' => 'restrict_abusive_words.admin.inc',
   );
   $items['admin/config/content/restrict_abusive_words/autocomplete'] = array(
-    'title' => 'Autocomplete for Abusive Word',
+    'title' => 'Autocomplete for Abusive Words',
     'page callback' => '_restrict_abusive_words_abusive_word_autocomplete',
     'access callback' => 'user_access',
     'access arguments' => array('administer restrict abusive words'),
@@ -466,7 +466,7 @@ function _restrict_abusive_words_get_words_list() {
  * Error message against the field name(machine name).
  */
 function _restrict_abusive_words_validation_message($field, $word) {
-  $message = t("%word is not allowed word to use as it is abusive words. Please correct the word or contact to site administrator.", array("%word" => $word));
+  $message = t("The word %word is not allowed. Please correct the word or contact the site administrator.", array("%word" => $word));
   form_set_error($field, $message);
 }
 
@@ -474,7 +474,7 @@ function _restrict_abusive_words_validation_message($field, $word) {
  * Warning message against the Content.
  */
 function _restrict_abusive_words_submit_message($entity, $title, $word) {
-  $message = "$title( {$entity} ) is deactived, please check the word:$word, it is a abusive word.";
+  $message = "$title( {$entity} ) is deactivated, please check the word: $word, it is not allowed.";
   drupal_set_message($message, 'warning');
 }
 

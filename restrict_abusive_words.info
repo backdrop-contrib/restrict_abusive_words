@@ -1,5 +1,5 @@
 name = Restrict Abusive Words
-description = "Restrict to use abusive/bad words in the forms all over the site."
+description = "Restrict use of abusive/bad words in the forms all over the site."
 core = 7.x
 package = Other
 configure = admin/config/content/restrict_abusive_words
