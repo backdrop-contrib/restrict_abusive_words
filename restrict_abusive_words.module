@@ -1,25 +1,8 @@
 <?php
-
 /**
  * @file
  * Restrict Abusive Words module.
  */
-
-/**
- * Implements hook_help().
- */
-function restrict_abusive_words_help($path, $arg) {
-  switch ($path) {
-    case 'admin/help#restrict_abusive_words':
-      return t('The Restrict Abusive Words module restricts the use of words or phrases in forms all over the site content. The Restriction can be applied on content form, comment form, user profile form, user registration form, and webform. Restriction can also be applied based on user roles.');
-
-    case 'admin/config/content/restrict_abusive_words':
-      return t('Set the basic Configuration to restrict the use of abusive words in the forms all over the site.');
-
-    case 'admin/people/permissions#administer restrict abusive words':
-      return t('Allow users to configure abusive words which need to be restricted.');
-  }
-}
 
 /**
  * Implements hook_permission().
