@@ -25,7 +25,7 @@ function restrict_abusive_words_menu() {
   $items['admin/config/content/restrict_abusive_words'] = array(
     'title' => 'Restrict Abusive Words',
     'description' => 'General setting for Restrict Abusive Words.',
-    'page callback' => 'drupal_get_form',
+    'page callback' => 'backdrop_get_form',
     'page arguments' => array('restrict_abusive_words_admin_form'),
     'access callback' => 'user_access',
     'access arguments' => array('administer restrict abusive words'),
@@ -50,7 +50,7 @@ function restrict_abusive_words_menu() {
   );
   $items['admin/config/content/restrict_abusive_words/add'] = array(
     'title' => 'Add abusive words',
-    'page callback' => 'drupal_get_form',
+    'page callback' => 'backdrop_get_form',
     'page arguments' => array('restrict_abusive_words_admin_add_form'),
     'access callback' => 'user_access',
     'access arguments' => array('administer restrict abusive words'),
@@ -60,7 +60,7 @@ function restrict_abusive_words_menu() {
   );
   $items['admin/config/content/restrict_abusive_words/edit/%'] = array(
     'title' => 'Edit Abusive words',
-    'page callback' => 'drupal_get_form',
+    'page callback' => 'backdrop_get_form',
     'page arguments' => array('restrict_abusive_words_admin_edit_form', 5),
     'access callback' => 'user_access',
     'access arguments' => array('administer restrict abusive words'),
@@ -69,7 +69,7 @@ function restrict_abusive_words_menu() {
   );
   $items['admin/config/content/restrict_abusive_words/delete/%'] = array(
     'title' => 'Delete Abusive words',
-    'page callback' => 'drupal_get_form',
+    'page callback' => 'backdrop_get_form',
     'page arguments' => array('restrict_abusive_words_admin_form_delete_confirm', 5),
     'access callback' => 'user_access',
     'access arguments' => array('administer restrict abusive words'),
@@ -100,6 +100,7 @@ function restrict_abusive_words_form_alter(&$form, &$form_state, $form_id) {
   $node_form = array();
   $comment_form = array();
   $user_form = array();
+
   $actions = variable_get('restrict_abusive_words_actions');
   $general_form = variable_get('restrict_abusive_words_general_form');
   $disable_user_roles = variable_get('restrict_abusive_words_disable_user_roles');
@@ -468,7 +469,7 @@ function _restrict_abusive_words_validation_message($field, $word) {
  */
 function _restrict_abusive_words_submit_message($entity, $title, $word) {
   $message = "$title( {$entity} ) is deactivated, please check the word: $word, it is not allowed.";
-  drupal_set_message($message, 'warning');
+  backdrop_set_message($message, 'warning');
 }
 
 /**
@@ -490,6 +491,6 @@ function _restrict_abusive_words_abusive_word_autocomplete($string) {
     }
 
     // Return the result to the form in json.
-    drupal_json_output($matches);
+    backdrop_json_output($matches);
   }
 }

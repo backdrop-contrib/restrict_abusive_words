@@ -144,9 +144,9 @@ function restrict_abusive_words_admin_add_form_submit($form, &$form_state) {
   foreach ($words as $word) {
     $row = new stdClass();
     $row->words = $word;
-    drupal_write_record('restrict_abusive_words', $row);
+    backdrop_write_record('restrict_abusive_words', $row);
     watchdog('restrict_abusive_words', 'Added word: %word', array('%word' => $row->words));
-    drupal_set_message(t('Added word: %word', array('%word' => $row->words)));
+    backdrop_set_message(t('Added word: %word', array('%word' => $row->words)));
   }
   $form_state['redirect'] = 'admin/config/content/restrict_abusive_words/add';
   cache_clear_all('*', 'cache_field', TRUE);
@@ -174,7 +174,7 @@ function restrict_abusive_words_admin_form_delete_confirm_submit($form, &$form_s
       ->condition('id', $form_state['values']['word_id'])
       ->execute();
 
-    drupal_set_message(t('The word was removed from the abusive word list'));
+    backdrop_set_message(t('The word was removed from the abusive word list'));
     $form_state['redirect'] = 'admin/config/content/restrict_abusive_words/list';
     cache_clear_all('*', 'cache_field', TRUE);
     cache_clear_all('restrict_abusive_words', 'cache');
@@ -222,8 +222,8 @@ function restrict_abusive_words_admin_list() {
  */
 function restrict_abusive_words_admin_edit_form($form, &$form_state, $word_id = NULL) {
   if (!isset($word_id) || !is_numeric($word_id)) {
-    drupal_set_message(t('The restrict_abusive_words ID of the word or phrase you are trying to edit is missing or is not a number.'), 'error');
-    drupal_goto('admin/config/content/restrict_abusive_words/list');
+    backdrop_set_message(t('The restrict_abusive_words ID of the word or phrase you are trying to edit is missing or is not a number.'), 'error');
+    backdrop_goto('admin/config/content/restrict_abusive_words/list');
   }
 
   $word = db_select('restrict_abusive_words', 'w')
@@ -265,9 +265,9 @@ function restrict_abusive_words_admin_edit_form($form, &$form_state, $word_id = 
  */
 function restrict_abusive_words_admin_edit_form_submit($form, &$form_state) {
   if (isset($form_state['values'])) {
-    drupal_write_record('restrict_abusive_words', $form_state['values'], 'id');
+    backdrop_write_record('restrict_abusive_words', $form_state['values'], 'id');
     watchdog('restrict_abusive_words', 'Updated word: %word', array('%word' => $form_state['values']['words']));
-    drupal_set_message(t('Updated word: %word', array('%word' => $form_state['values']['words'])));
+    backdrop_set_message(t('Updated word: %word', array('%word' => $form_state['values']['words'])));
     $form_state['redirect'] = 'admin/config/content/restrict_abusive_words/list';
     cache_clear_all('*', 'cache_field', TRUE);
     cache_clear_all('restrict_abusive_words', 'cache');
