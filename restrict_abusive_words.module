@@ -5,6 +5,16 @@
  */
 
 /**
+ * Implements hook_config_info().
+ */
+function restrict_abusive_words_config_info() {
+  $prefixes['restrict_abusive_words.settings'] = array(
+    'label' => t('Restrict Abusive Words Settings'),
+    'group' => t('Configuration'),
+  );
+  return $prefixes;
+}
+/**
  * Implements hook_permission().
  */
 function restrict_abusive_words_permission() {
@@ -101,12 +111,13 @@ function restrict_abusive_words_form_alter(&$form, &$form_state, $form_id) {
   $comment_form = array();
   $user_form = array();
 
-  $actions = variable_get('restrict_abusive_words_actions');
-  $general_form = variable_get('restrict_abusive_words_general_form');
-  $disable_user_roles = variable_get('restrict_abusive_words_disable_user_roles');
-  $user_roles = variable_get('restrict_abusive_words_user_roles');
-  $entity_node = variable_get('restrict_abusive_words_entity_node');
-  $entity_comment = variable_get('restrict_abusive_words_entity_comment');
+  $config = config('restrict_abusive_words.settings');
+  $actions = $config->get('restrict_abusive_words_actions');
+  $general_form = $config->get('restrict_abusive_words_general_form');
+  $disable_user_roles = $config->get('restrict_abusive_words_disable_user_roles');
+  $user_roles = $config->get('restrict_abusive_words_user_roles');
+  $entity_node = $config->get('restrict_abusive_words_entity_node');
+  $entity_comment = $config->get('restrict_abusive_words_entity_comment');
 
   if (!empty($actions)) {
     if ($actions == 'prevent_form') {
