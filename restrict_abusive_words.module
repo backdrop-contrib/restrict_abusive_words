@@ -447,7 +447,7 @@ function _restrict_abusive_words_exists_words($words, $string) {
 function _restrict_abusive_words_get_words_list() {
   $output = array();
   $results = db_query('Select * FROM {restrict_abusive_words}');
-  if (count($results) > 0) {
+  if ($results->rowCount() > 0) {
     foreach ($results as $result) {
       $output[] = $result->words;
     }
