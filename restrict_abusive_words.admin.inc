@@ -131,7 +131,8 @@ function restrict_abusive_words_admin_add_form_validate($form, &$form_state) {
     $search_string = _restrict_abusive_words_get_words_list();
     $check_word = _restrict_abusive_words_exists_words($search_string, $word);
     if ($check_word) {
-      form_set_error('words_list', $word . ' already exists in the abusive word list.');
+      $message = t('The word %word already exists in the abusive word list.', array('%word' => $word));
+      form_set_error('words_list', $message);
     }
   }
 }
