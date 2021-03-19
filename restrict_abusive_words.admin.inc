@@ -199,7 +199,7 @@ function restrict_abusive_words_admin_list() {
     ->extend('PagerDefault')
     ->extend('TableSort')
     ->orderByHeader($header)
-    ->limit(10)
+    ->limit(50)
     ->execute();
 
   foreach ($list as $word) {
