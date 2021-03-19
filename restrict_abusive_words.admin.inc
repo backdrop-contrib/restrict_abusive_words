@@ -1,12 +1,11 @@
 <?php
-
 /**
  * @file
  * Contains administrative configuration page.
  */
 
 /**
- * Restrict Abusive Words administration page for general setting.
+ * Administration form for general settings.
  */
 function restrict_abusive_words_admin_form($form, &$form_state) {
   $config = config('restrict_abusive_words.settings');
@@ -87,7 +86,7 @@ function restrict_abusive_words_admin_form($form, &$form_state) {
 }
 
 /**
- * Admin Add form to add abusive words.
+ * Add form to add abusive words.
  */
 function restrict_abusive_words_admin_add_form($form, &$form_state) {
   $form = array();
@@ -121,7 +120,7 @@ function restrict_abusive_words_admin_add_form($form, &$form_state) {
 }
 
 /**
- * Validate handler to add abusive words.
+ * Validate handler: Add abusive words.
  */
 function restrict_abusive_words_admin_add_form_validate($form, &$form_state) {
   $words_list = explode("\n", $form_state['values']['words_list']);
@@ -138,7 +137,7 @@ function restrict_abusive_words_admin_add_form_validate($form, &$form_state) {
 }
 
 /**
- * Submit handler to add abusive words.
+ * Submit handler: Add abusive words.
  */
 function restrict_abusive_words_admin_add_form_submit($form, &$form_state) {
   $words_list = explode("\n", $form_state['values']['words_list']);
@@ -157,7 +156,7 @@ function restrict_abusive_words_admin_add_form_submit($form, &$form_state) {
 }
 
 /**
- * Confirmation callback to delete word from abusive word list.
+ * Confirmation handler: Delete word from abusive word list.
  */
 function restrict_abusive_words_admin_form_delete_confirm($form, &$form_state, $word_id) {
   $form = array();
@@ -169,7 +168,7 @@ function restrict_abusive_words_admin_form_delete_confirm($form, &$form_state, $
 }
 
 /**
- * Submit callback to delete word from abusive word list.
+ * Submit handler: Delete word from abusive word list.
  */
 function restrict_abusive_words_admin_form_delete_confirm_submit($form, &$form_state) {
   if ($form_state['values']['confirm']) {
@@ -185,7 +184,7 @@ function restrict_abusive_words_admin_form_delete_confirm_submit($form, &$form_s
 }
 
 /**
- * Lists of existing abusive words or phrases that are configured to restrict.
+ * Page Callback: List of existing abusive words or phrases.
  */
 function restrict_abusive_words_admin_list() {
   $build = array();
@@ -221,7 +220,7 @@ function restrict_abusive_words_admin_list() {
 }
 
 /**
- * Restrict Abusive Word edit word form.
+ * Page callback: edit Restrict Abusive Word form.
  */
 function restrict_abusive_words_admin_edit_form($form, &$form_state, $word_id = NULL) {
   if (!isset($word_id) || !is_numeric($word_id)) {
@@ -264,13 +263,15 @@ function restrict_abusive_words_admin_edit_form($form, &$form_state, $word_id = 
 }
 
 /**
- * Restrict Abusive Words edit form submit handler.
+ * Submit handler: edit Restrict Abusive Word form.
  */
 function restrict_abusive_words_admin_edit_form_submit($form, &$form_state) {
   if (isset($form_state['values'])) {
     backdrop_write_record('restrict_abusive_words', $form_state['values'], 'id');
-    watchdog('restrict_abusive_words', 'Updated word: %word', array('%word' => $form_state['values']['words']));
-    backdrop_set_message(t('Updated word: %word', array('%word' => $form_state['values']['words'])));
+    $message = 'Updated word: %word';
+    $replacements = array('%word' => $form_state['values']['words']);
+    watchdog('restrict_abusive_words', $message, $replacements);
+    backdrop_set_message(t($message, $replacements));
     $form_state['redirect'] = 'admin/config/content/restrict_abusive_words/list';
     cache_clear_all('*', 'cache_field', TRUE);
     cache_clear_all('restrict_abusive_words', 'cache');
