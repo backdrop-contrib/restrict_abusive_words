@@ -327,11 +327,13 @@ function _restrict_abusive_words_user_form_submit(&$form, &$form_state) {
         }
       }
       elseif (($key == 'name') || ($key == 'mail')) {
+        $user = $form_state['user'];
         $check_word = _restrict_abusive_words_search_words($search_string, $form_state['values'][$key]);
       }
 
       if ($check_word !== FALSE) {
-        _restrict_abusive_words_submit_message($check_word);
+        $entity = 'User account';
+        _restrict_abusive_words_submit_message($entity, $user->name, $check_word);
         $form_state['values']['status'] = FALSE;
       }
     }
@@ -351,7 +353,9 @@ function _restrict_abusive_words_web_form_submit(&$form, &$form_state) {
       }
 
       if ($check_word !== FALSE) {
-        _restrict_abusive_words_submit_message($check_word);
+        $entity = t('Webform submission');
+        $node = $form_state['build_info']['args'][0];
+        _restrict_abusive_words_submit_message($entity, check_plain($node->title), $check_word);
         $form_state['values']['status'] = FALSE;
       }
     }
