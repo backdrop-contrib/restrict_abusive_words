@@ -22,63 +22,65 @@ function restrict_abusive_words_admin_form($form, &$form_state) {
     'user_register_form' => t('User Registration Form'),
     'user_profile_form' => t('User Profile Form'),
     'webform' => t('Webform'),
+    // @todo add node forms and comment forms here, use #states below.
   );
 
   $node_types = node_type_get_types();
+  $node_type = array();
+  $comment_type = array();
   foreach ($node_types as $type) {
     $node_type[$type->type] = $type->name;
+    // @toto check if comments are enabled before including.
+    $comment_type[$type->type] = $type->name . ' comments';
   }
 
   $actions = array(
-    'prevent_form' => t('Prevent form submission'),
-    'deactive_form' => t('Deactivate the user'),
+    'prevent_form' => t('Prevent the form from being submitted until abusive words are removed.'),
+    'deactive_form' => t('Submit the form as usual, but then unpublish the content, or block the user.'),
   );
 
   $form['restrict_abusive_words_actions'] = array(
     '#type' => 'radios',
-    '#title' => t('Choose the action.'),
-    '#description' => t('Choose the action after submitting the form, it will prevent the form from being submitted or deactivate the content/user etc.'),
+    '#title' => t('How should abusive words be handled?'),
     '#options' => $actions,
     '#default_value' => $config->get('restrict_abusive_words_actions'),
   );
 
+  // @todo - convert to permission.
   $form['restrict_abusive_words_disable_user_roles'] = array(
     '#type' => 'checkboxes',
-    '#title' => t('Disable User Roles'),
-    '#description' => t('Disable Restrict Abusive Words for the selected user roles. By default no user role is selected.'),
+    '#title' => t('Remove restrictions for the following Roles:'),
     '#options' => $user_role,
     '#default_value' => $config->get('restrict_abusive_words_disable_user_roles'),
   );
 
+  // @todo - convert to permission (or remove entirely, the inverse is above)
   $form['restrict_abusive_words_user_roles'] = array(
     '#type' => 'checkboxes',
-    '#title' => t('Enable User Roles'),
-    '#description' => t('Restrict the use of abusive words for the selected user roles. If no user roles are checked, it will assume all user roles.'),
+    '#title' => t('Restrict the use of abusive words for the selected user roles:'),
+    '#description' => t('If no user roles are checked, it will assume all user roles.'),
     '#options' => $user_role,
     '#default_value' => $config->get('restrict_abusive_words_user_roles'),
   );
 
   $form['restrict_abusive_words_general_form'] = array(
     '#type' => 'checkboxes',
-    '#title' => t('Select General Form'),
-    '#description' => t('Restrict abusive words use in General Form.'),
+    '#title' => t('Restrict abusive words use on the following general forms:'),
     '#options' => $general_form,
     '#default_value' => $config->get('restrict_abusive_words_general_form'),
   );
 
   $form['restrict_abusive_words_entity_node'] = array(
     '#type' => 'checkboxes',
-    '#title' => t('Select Node Form'),
-    '#description' => t('Restrict abusive words use in Node Form.'),
+    '#title' => t('Restrict abusive words use on the following types of content:'),
     '#options' => $node_type,
     '#default_value' => $config->get('restrict_abusive_words_entity_node'),
   );
 
   $form['restrict_abusive_words_entity_comment'] = array(
     '#type' => 'checkboxes',
-    '#title' => t('Select Comment Node Form'),
-    '#description' => t('Restrict abusive words use in Comment Node Form.'),
-    '#options' => $node_type,
+    '#title' => t('Restrict abusive words use on the following types of comments:'),
+    '#options' => $comment_type,
     '#default_value' => $config->get('restrict_abusive_words_entity_comment'),
   );
 
