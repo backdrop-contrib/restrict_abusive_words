@@ -51,3 +51,12 @@ function restrict_abusive_words_update_1000() {
   variable_del('restrict_abusive_words_entity_node');
   variable_del('restrict_abusive_words_entity_comment');
 }
+
+/**
+ * Adds default values for new settings.
+ */
+function restrict_abusive_words_update_1002() {
+  $config = config('restrict_abusive_words.settings');
+  $config->set('restrict_abusive_words_search', 'words');
+  $config->save();
+}
